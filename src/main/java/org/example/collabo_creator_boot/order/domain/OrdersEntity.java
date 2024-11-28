@@ -1,10 +1,12 @@
 package org.example.collabo_creator_boot.order.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.example.collabo_creator_boot.common.BasicEntity;
 import org.example.collabo_creator_boot.customer.domain.CustomerEntity;
 
 @Entity
+@Getter
 @Table(name = "orders")
 public class OrdersEntity extends BasicEntity {
 
