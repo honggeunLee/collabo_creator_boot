@@ -114,8 +114,8 @@ public class ProductService {
                 .productDescription(dto.getProductDescription())
                 .productPrice(dto.getProductPrice())
                 .stock(dto.getStock())
-                .categoryNo(category)
-                .creatorId(creator)
+                .categoryEntity(category)
+                .creatorEntity(creator)
                 .productStatus(dto.getProductStatus())
                 .build();
     }
