@@ -14,15 +14,7 @@ public class ReviewEntity extends BasicEntity {
     @Column(name="review_no", nullable = false)
     private Long reviewNo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_no", referencedColumnName = "product_no")
-    private ProductEntity productNo;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
-    private CustomerEntity customerId;
-
-    @Column(name = "rating", nullable = false)
+    @Column(name = "rating")
     private int rating;
 
     @Column(name = "comment", nullable = false)
@@ -31,6 +23,14 @@ public class ReviewEntity extends BasicEntity {
     @Column(name = "reply", nullable = false)
     private String reply;
 
-    @Column(name = "like", nullable = false)
-    private int like;
+    @Column(name = "review_like")
+    private int reviewLike;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_no", referencedColumnName = "product_no")
+    private ProductEntity productNo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
+    private CustomerEntity customerId;
 }
