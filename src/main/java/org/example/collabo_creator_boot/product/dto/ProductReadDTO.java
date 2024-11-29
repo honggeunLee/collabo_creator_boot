@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import org.example.collabo_creator_boot.product.domain.ProductStatus;
 
+import java.util.List;
+
 @Data
 @Builder
 public class ProductReadDTO {
@@ -12,9 +14,10 @@ public class ProductReadDTO {
     private Long productNo;
     private String productName;
     private String productDescription;
-    private String productPrice;
+    private Integer productPrice;
     private String stock;
     private String productStatus;
+
     @JsonProperty("productStatus")
     public String getProductStatusDescription() {
         return ProductStatus.fromDbValue(productStatus).getDescription();
