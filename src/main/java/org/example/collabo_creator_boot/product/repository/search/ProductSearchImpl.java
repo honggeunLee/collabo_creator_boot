@@ -37,9 +37,9 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
         QCreatorEntity creator = QCreatorEntity.creatorEntity;
 
         JPQLQuery<ProductEntity> query = from(product);
-        query.leftJoin(productImage).on(product.eq(productImage.productNo));
-        query.leftJoin(category).on(product.categoryNo.eq(category));
-        query.leftJoin(creator).on(product.creatorId.eq(creator));
+        query.leftJoin(productImage).on(product.productNo.eq(productImage.productEntity.productNo));
+        query.leftJoin(category).on(product.categoryEntity.categoryNo.eq(category.categoryNo));
+        query.leftJoin(creator).on(product.creatorEntity.creatorId.eq(creator.creatorId));
 
         this.getQuerydsl().applyPagination(pageable,query);
 

@@ -17,7 +17,7 @@ public class OrdersEntity extends BasicEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
-    private CustomerEntity customerId;
+    private CustomerEntity customerEntity;
 
     @Column(name = "total_amount", nullable = false)
     private int totalAmount;

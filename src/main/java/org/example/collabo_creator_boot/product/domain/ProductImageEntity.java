@@ -23,6 +23,6 @@ public class ProductImageEntity extends BasicEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_no", referencedColumnName = "product_no")
-    private ProductEntity productNo;
+    private ProductEntity productEntity;
 
 }
