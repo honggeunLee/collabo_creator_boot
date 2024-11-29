@@ -14,11 +14,11 @@ public class OrderItemEntity extends BasicEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_no", referencedColumnName = "order_no")
-    private OrdersEntity orderNo;
+    private OrdersEntity ordersEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_no", referencedColumnName = "product_no")
-    private ProductEntity productNo;
+    private ProductEntity productEntity;
 
     @Column(name = "quantity", nullable = false)
     private int quantity;

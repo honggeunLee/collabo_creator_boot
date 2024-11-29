@@ -13,7 +13,7 @@ public class RefundNCancelEntity extends BasicEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_no", referencedColumnName = "order_no")
-    private OrdersEntity orderNo;
+    private OrdersEntity ordersEntity;
 
     @Column(name = "reason", nullable = false)
     private String reason;

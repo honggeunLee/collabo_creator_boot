@@ -30,10 +30,10 @@ public class ReviewEntity extends BasicEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_no", referencedColumnName = "product_no")
-    private ProductEntity productNo;
+    private ProductEntity productEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
-    private CustomerEntity customerId;
+    private CustomerEntity customerEntity;
   
 }

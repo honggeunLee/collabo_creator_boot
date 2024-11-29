@@ -17,7 +17,7 @@ public class CategoryEntity extends BasicEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", referencedColumnName = "creator_id")
-    private CreatorEntity creator_id;
+    private CreatorEntity creatorEntity;
 
     @Column(name = "category_name", nullable = false)
     private String categoryName;
