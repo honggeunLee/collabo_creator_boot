@@ -5,8 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.collabo_creator_boot.category.domain.CategoryEntity;
-import org.example.collabo_creator_boot.creator.domain.CreatorEntity;
+
 
 import java.util.List;
 
