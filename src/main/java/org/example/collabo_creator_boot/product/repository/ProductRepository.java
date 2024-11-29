@@ -14,7 +14,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity,String>, 
     @Query("""
         SELECT p, c, r, i 
         FROM ProductEntity p
-        LEFT JOIN p.categoryNo c
+        LEFT JOIN p.categoryEntity c
         LEFT JOIN ReviewEntity r ON r.productNo = p
         LEFT JOIN ProductImageEntity i ON i.productNo = p
         WHERE p.productNo = :productNo

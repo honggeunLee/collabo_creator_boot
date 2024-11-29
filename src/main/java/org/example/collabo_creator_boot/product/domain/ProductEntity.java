@@ -24,11 +24,11 @@ public class ProductEntity extends BasicEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", referencedColumnName = "creator_id")
-    private CreatorEntity creatorId;
+    private CreatorEntity creatorEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_no", referencedColumnName = "category_no")
-    private CategoryEntity categoryNo;
+    private CategoryEntity categoryEntity;
 
     @Column(name = "product_name", nullable = false)
     private String productName;
