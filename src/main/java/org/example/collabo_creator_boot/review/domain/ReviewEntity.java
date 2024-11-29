@@ -1,11 +1,13 @@
 package org.example.collabo_creator_boot.review.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.example.collabo_creator_boot.common.BasicEntity;
 import org.example.collabo_creator_boot.customer.domain.CustomerEntity;
 import org.example.collabo_creator_boot.product.domain.ProductEntity;
 
 @Entity
+@Getter
 @Table(name = "review")
 public class ReviewEntity extends BasicEntity {
 
@@ -31,6 +33,6 @@ public class ReviewEntity extends BasicEntity {
     @Column(name = "reply", nullable = false)
     private String reply;
 
-    @Column(name = "like", nullable = false)
-    private int like;
+    @Column(name = "review_like", nullable = false)
+    private int reviewLike;
 }
