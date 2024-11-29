@@ -10,16 +10,17 @@ import org.example.collabo_creator_boot.creator.domain.CreatorEntity;
 public class ProductEntity extends BasicEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_no")
     private Long productNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", referencedColumnName = "creator_id")
-    private CreatorEntity creatorEntity;
+    private CreatorEntity creator;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_no", referencedColumnName = "category_no")
-    private CategoryEntity categoryEntity;
+    private CategoryEntity category;
 
     @Column(name = "product_name", nullable = false)
     private String productName;

@@ -20,6 +20,9 @@ public class OrdersEntity extends BasicEntity {
     @Column(name = "total_amount", nullable = false)
     private int totalAmount;
 
+    @Column(name = "total_price", nullable = false)
+    private int totalPrice;
+
     @Column(name = "status", nullable = false)
     private int status;
 
