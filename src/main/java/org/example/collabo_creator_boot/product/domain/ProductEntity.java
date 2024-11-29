@@ -9,6 +9,9 @@ import org.example.collabo_creator_boot.category.domain.CategoryEntity;
 import org.example.collabo_creator_boot.common.BasicEntity;
 import org.example.collabo_creator_boot.creator.domain.CreatorEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Builder
@@ -24,11 +27,11 @@ public class ProductEntity extends BasicEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", referencedColumnName = "creator_id")
-    private CreatorEntity creator;
+    private CreatorEntity creatorEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_no", referencedColumnName = "category_no")
-    private CategoryEntity category;
+    private CategoryEntity categoryEntity;
 
     @Column(name = "product_name", nullable = false)
     private String productName;
@@ -37,12 +40,24 @@ public class ProductEntity extends BasicEntity {
     private String productDescription;
 
     @Column(name = "product_price", nullable = false)
-    private String productPrice;
+    private Integer productPrice;
 
     @Column(name = "stock")
     private String stock;
 
     @Column(name = "product_status")
     private String productStatus;
+
+    @OneToMany(mappedBy = "productEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductImageEntity> productImages = new ArrayList<>();
+
+    public void addProductImage(ProductImageEntity productImage) {
+        if (productImages == null) {
+            productImages = new ArrayList<>();
+        }
+        productImages.add(productImage);
+        productImage.linkToProduct(this);
+    }
+
 
 }

@@ -30,5 +30,5 @@ public class CreatorOfflineStoreEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id",referencedColumnName="creator_id")
-    private CreatorEntity creatorId;
+    private CreatorEntity creatorEntity;
 }

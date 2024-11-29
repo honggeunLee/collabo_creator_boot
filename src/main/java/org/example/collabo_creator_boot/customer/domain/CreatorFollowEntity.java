@@ -17,9 +17,9 @@ public class CreatorFollowEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", referencedColumnName = "creator_id")
-    private CreatorEntity creatorId;
+    private CreatorEntity creatorEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
-    private CustomerEntity customerId;
+    private CustomerEntity customerEntity;
 }

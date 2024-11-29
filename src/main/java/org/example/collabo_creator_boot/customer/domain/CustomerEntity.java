@@ -17,7 +17,7 @@ public class CustomerEntity extends BasicEntity {
     private String customerName;
 
     @Column(name = "customer_phone", nullable = false)
-    private String status;
+    private String customerPhone;
 
     @Column(name = "customer_zipcode", nullable = false)
     private String customerZipcode;
