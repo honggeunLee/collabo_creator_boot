@@ -86,7 +86,7 @@ public class ProductService {
                 .rating(averageRating)
                 .comment(comment)
                 .reviewLike(likeCount)
-                .productImageUrl(imageUrls.isEmpty() ? null : imageUrls.get(0)) // 첫 번째 이미지
+                .productImageUrl(imageUrls.isEmpty() ? null : imageUrls.get(0))
                 .build();
     }
 
@@ -100,12 +100,22 @@ public class ProductService {
 
         ProductEntity product = addProductEntity(productRegisterDTO, category, creator);
 
+        // 이미지 데이터 처리
+        if (productRegisterDTO.getProductImages() != null && !productRegisterDTO.getProductImages().isEmpty()) {
+            productRegisterDTO.getProductImages().forEach(imageUrl -> {
+                ProductImageEntity productImage = ProductImageEntity.builder()
+                        .productImageUrl(imageUrl)
+                        .build();
+                product.addProductImage(productImage); // 연관 관계 설정
+            });
+        }
+
+
         productRepository.save(product);
 
         return product.getProductNo();
-
-
     }
+
 
     private ProductEntity addProductEntity(ProductRegisterDTO dto, CategoryEntity category, CreatorEntity creator) {
 
