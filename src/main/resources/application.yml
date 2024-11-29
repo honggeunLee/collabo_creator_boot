@@ -40,6 +40,5 @@ org:
 logging:
   level:
     org.springframework.security.web: TRACE
-    org.oz.adminapi.localmaneger: TRACE
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE

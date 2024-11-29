@@ -1,11 +1,19 @@
 package org.example.collabo_creator_boot.product.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.example.collabo_creator_boot.category.domain.CategoryEntity;
 import org.example.collabo_creator_boot.common.BasicEntity;
 import org.example.collabo_creator_boot.creator.domain.CreatorEntity;
 
 @Entity
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "product")
 public class ProductEntity extends BasicEntity {
 

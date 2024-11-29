@@ -1,9 +1,12 @@
 package org.example.collabo_creator_boot.product.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.example.collabo_creator_boot.common.BasicEntity;
 
 @Entity
+@Getter
+
 @Table(name = "product_image")
 public class ProductImageEntity extends BasicEntity {
 
@@ -21,4 +24,5 @@ public class ProductImageEntity extends BasicEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_no", referencedColumnName = "product_no")
     private ProductEntity productNo;
+
 }
