@@ -6,6 +6,7 @@ import org.example.collabo_creator_boot.common.BasicEntity;
 
 @Entity
 @Getter
+
 @Table(name = "product_image")
 public class ProductImageEntity extends BasicEntity {
 
