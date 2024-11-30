@@ -57,6 +57,7 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                         product.productPrice,
                         product.stock,
                         product.productStatus.stringValue().as("productStatus"),
+                        product.createdAt,
                         category.categoryNo,
                         category.categoryName,
                         creator.creatorName
