@@ -5,6 +5,9 @@ import lombok.Getter;
 import org.example.collabo_creator_boot.common.BasicEntity;
 import org.example.collabo_creator_boot.customer.domain.CustomerEntity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Getter
 @Table(name = "orders")
@@ -20,14 +23,20 @@ public class OrdersEntity extends BasicEntity {
     private CustomerEntity customerEntity;
 
     @Column(name = "total_amount", nullable = false)
-    private int totalAmount;
+    private Integer totalAmount;
 
     @Column(name = "total_price", nullable = false)
-    private int totalPrice;
+    private Integer totalPrice;
 
     @Column(name = "status", nullable = false)
-    private int status;
+    private String status;
 
     @Column(name = "customer_address", nullable = false)
     private String customerAddress;
+
+    @Column(name = "customer_addr_detail", nullable = false)
+    private String customerAddrDetail;
+
+    @OneToMany(mappedBy = "ordersEntity", fetch = FetchType.LAZY)
+    private Set<OrderItemEntity> orderItems = new HashSet<>();
 }
