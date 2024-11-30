@@ -16,6 +16,8 @@ public class ProductListDTO {
     private Integer productPrice;
     private String stock;
     private String productStatus;
+    private Long categoryNo;
+    private String categoryName;
 
     @JsonProperty("productStatus")
     public String getProductStatusDescription() {
