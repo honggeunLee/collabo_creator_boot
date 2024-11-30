@@ -66,11 +66,6 @@ public class ProductService {
                 .get(0)
                 .getComment();
 
-        int likeCount = reviews
-                .stream()
-                .mapToInt(ReviewEntity::getReviewLike)
-                .sum();
-
         List<String> imageUrls = images.stream()
                 .map(ProductImageEntity::getProductImageUrl)
                 .collect(Collectors.toList());
@@ -85,7 +80,6 @@ public class ProductService {
                 .categoryName(category.getCategoryName())
                 .rating(averageRating)
                 .comment(comment)
-                .reviewLike(likeCount)
                 .productImageUrl(imageUrls.isEmpty() ? null : imageUrls.get(0))
                 .build();
     }

@@ -29,7 +29,6 @@ public class ProductReadDTO {
     //review data
     private int rating;
     private String comment;
-    private int reviewLike;
 
     //img data
     private String productImageUrl;
