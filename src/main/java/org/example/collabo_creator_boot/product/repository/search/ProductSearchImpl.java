@@ -2,7 +2,6 @@ package org.example.collabo_creator_boot.product.repository.search;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
 import lombok.extern.log4j.Log4j2;
 import org.example.collabo_creator_boot.category.domain.QCategoryEntity;
@@ -61,8 +60,7 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                         category.categoryNo,
                         category.categoryName,
                         creator.creatorName
-                )
-        );
+                )).groupBy(product.productNo, productImage.productImageOrd);
 
         List<ProductListDTO> dtoList = dtojpqlQuery.fetch();
 

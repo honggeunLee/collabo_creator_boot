@@ -21,6 +21,6 @@ public class OrderItemEntity extends BasicEntity {
     private ProductEntity productEntity;
 
     @Column(name = "quantity", nullable = false)
-    private int quantity;
+    private Integer quantity;
 
 }

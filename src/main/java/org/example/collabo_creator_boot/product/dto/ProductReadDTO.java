@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import org.example.collabo_creator_boot.product.domain.ProductStatus;
 
-import java.util.List;
-
 @Data
 @Builder
 public class ProductReadDTO {
@@ -15,7 +13,7 @@ public class ProductReadDTO {
     private String productName;
     private String productDescription;
     private Integer productPrice;
-    private String stock;
+    private Integer stock;
     private String productStatus;
 
     @JsonProperty("productStatus")
@@ -29,7 +27,6 @@ public class ProductReadDTO {
     //review data
     private int rating;
     private String comment;
-    private int reviewLike;
 
     //img data
     private String productImageUrl;

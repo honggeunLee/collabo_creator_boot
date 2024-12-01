@@ -43,7 +43,7 @@ public class ProductEntity extends BasicEntity {
     private Integer productPrice;
 
     @Column(name = "stock")
-    private String stock;
+    private Integer stock;
 
     @Column(name = "product_status")
     private String productStatus;

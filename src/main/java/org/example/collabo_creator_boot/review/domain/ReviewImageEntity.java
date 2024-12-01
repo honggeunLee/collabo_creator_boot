@@ -2,7 +2,6 @@ package org.example.collabo_creator_boot.review.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import org.example.collabo_creator_boot.qna.domain.QnAEntity;
 
 @Entity
 @Getter
