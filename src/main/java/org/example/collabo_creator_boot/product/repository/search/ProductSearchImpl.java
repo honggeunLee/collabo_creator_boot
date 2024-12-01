@@ -60,8 +60,7 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                         category.categoryNo,
                         category.categoryName,
                         creator.creatorName
-                )
-        );
+                )).groupBy(product.productNo, productImage.productImageOrd);
 
         List<ProductListDTO> dtoList = dtojpqlQuery.fetch();
 

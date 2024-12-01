@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import org.example.collabo_creator_boot.product.domain.ProductStatus;
 
-import java.util.List;
-
 @Data
 @Builder
 public class ProductReadDTO {
