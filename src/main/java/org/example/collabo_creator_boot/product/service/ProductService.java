@@ -79,7 +79,6 @@ public class ProductService {
                 .productStatus(product.getProductStatus())
                 .categoryName(category.getCategoryName())
                 .rating(averageRating)
-                .comment(comment)
                 .productImageUrl(imageUrls.isEmpty() ? null : imageUrls.get(0))
                 .build();
     }

@@ -19,7 +19,7 @@ public class ProductRegisterDTO {
     private String productName;
     private String productDescription;
     private Integer productPrice;
-    private String stock;
+    private Integer stock;
     private Long categoryNo;
     private String creatorId;
     private String productStatus;
