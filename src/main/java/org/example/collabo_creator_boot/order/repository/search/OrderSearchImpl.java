@@ -32,8 +32,7 @@ public class OrderSearchImpl extends QuerydslRepositorySupport implements OrderS
     }
 
     @Override
-    public PageResponseDTO<OrderListDTO> orderList(PageRequestDTO pageRequestDTO) {
-        // 페이징 설정
+    public PageResponseDTO<OrderListDTO> orderListByCreator(String creatorId, PageRequestDTO pageRequestDTO) {
         Pageable pageable = PageRequest.of(
                 pageRequestDTO.getPage() - 1,
                 pageRequestDTO.getSize(),
@@ -43,9 +42,10 @@ public class OrderSearchImpl extends QuerydslRepositorySupport implements OrderS
         QCustomerEntity customer = QCustomerEntity.customerEntity;
         QOrderItemEntity orderItem = QOrderItemEntity.orderItemEntity;
 
-        // 기본 주문 데이터 조회 (GROUP BY 사용)
+        // 기본 주문 데이터 조회
         JPQLQuery<OrderListDTO> query = from(orders)
                 .leftJoin(orders.customerEntity, customer)
+                .where(orders.creatorEntity.creatorId.eq(creatorId)) // 필터링 조건 추가
                 .select(Projections.bean(OrderListDTO.class,
                         orders.orderNo,
                         orders.createdAt.as("orderDate"),
@@ -79,7 +79,6 @@ public class OrderSearchImpl extends QuerydslRepositorySupport implements OrderS
                 )
                 .fetch();
 
-        // 주문 번호를 기준으로 OrderItemDTO 리스트 매핑
         Map<Long, List<OrderItemDTO>> orderItemMap = itemTuples.stream()
                 .collect(Collectors.groupingBy(
                         tuple -> tuple.get(orderItem.ordersEntity.orderNo),
@@ -89,7 +88,6 @@ public class OrderSearchImpl extends QuerydslRepositorySupport implements OrderS
                         )
                 ));
 
-        // DTO에 주문 상품 리스트 매핑
         dtoList.forEach(dto -> {
             Long orderNo = dto.getOrderNo();
             dto.setOrderItems(orderItemMap.getOrDefault(orderNo, Collections.emptyList()));
@@ -103,5 +101,6 @@ public class OrderSearchImpl extends QuerydslRepositorySupport implements OrderS
                 .totalCount(total)
                 .build();
     }
+
 
 }

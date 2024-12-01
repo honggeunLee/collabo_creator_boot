@@ -15,7 +15,7 @@ public class ProductReadDTO {
     private String productName;
     private String productDescription;
     private Integer productPrice;
-    private String stock;
+    private Integer stock;
     private String productStatus;
 
     @JsonProperty("productStatus")

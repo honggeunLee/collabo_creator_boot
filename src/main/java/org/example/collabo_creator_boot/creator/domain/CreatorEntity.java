@@ -4,6 +4,12 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import org.example.collabo_creator_boot.common.BasicEntity;
+import org.example.collabo_creator_boot.order.domain.OrdersEntity;
+import org.example.collabo_creator_boot.qna.domain.QnAEntity;
+import org.example.collabo_creator_boot.review.domain.ReviewEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -46,5 +52,17 @@ public class CreatorEntity extends BasicEntity {
 
     @Column(name = "creator_bank")
     private String creatorBank;
+
+    // Creator와 연관된 QnA
+    @OneToMany(mappedBy = "creatorEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<QnAEntity> qnaEntities = new ArrayList<>();
+
+    // Creator와 연관된 Review
+    @OneToMany(mappedBy = "creatorEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReviewEntity> reviewEntities = new ArrayList<>();
+
+    // Creator와 연관된 Order
+    @OneToMany(mappedBy = "creatorEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrdersEntity> orderEntities = new ArrayList<>();
 
 }

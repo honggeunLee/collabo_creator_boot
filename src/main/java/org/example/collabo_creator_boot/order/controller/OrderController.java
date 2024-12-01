@@ -17,14 +17,28 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping("/list")
-    public ResponseEntity<PageResponseDTO<OrderListDTO>> getOrderList(@ModelAttribute PageRequestDTO pageRequestDTO) {
-        PageResponseDTO<OrderListDTO> response = orderService.getOrderList(pageRequestDTO);
+    public ResponseEntity<PageResponseDTO<OrderListDTO>> getOrderList(
+            @CookieValue(value = "creatorId", required = false) String creatorId,
+            @ModelAttribute PageRequestDTO pageRequestDTO) {
+
+        if (creatorId == null || creatorId.isEmpty()) {
+            throw new IllegalArgumentException("Creator ID is missing.");
+        }
+
+        PageResponseDTO<OrderListDTO> response = orderService.getOrderListByCreator(creatorId, pageRequestDTO);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{orderNo}")
-    public ResponseEntity<OrderDetailDTO> getOrderDetail(@PathVariable Long orderNo) {
-        OrderDetailDTO orderDetail = orderService.getOrderDetail(orderNo);
+    public ResponseEntity<OrderDetailDTO> getOrderDetail(
+            @CookieValue(value = "creatorId", required = false) String creatorId,
+            @PathVariable Long orderNo) {
+
+        if (creatorId == null || creatorId.isEmpty()) {
+            throw new IllegalArgumentException("Creator ID is missing.");
+        }
+
+        OrderDetailDTO orderDetail = orderService.getOrderDetailByCreator(creatorId, orderNo);
         return ResponseEntity.ok(orderDetail);
     }
 }
