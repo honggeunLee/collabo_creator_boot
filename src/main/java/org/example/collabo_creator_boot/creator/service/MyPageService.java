@@ -31,6 +31,7 @@ public class MyPageService {
         CreatorEntity existingCreator = myPageRepository.findById(creatorId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Creator ID입니다."));
 
+        // 기존 컬렉션 유지
         CreatorEntity updatedCreator = CreatorEntity.builder()
                 .creatorId(existingCreator.getCreatorId())
                 .creatorName(myPageDTO.getCreatorName())
@@ -42,8 +43,14 @@ public class MyPageService {
                 .logoImg(myPageDTO.getLogoImg())
                 .emailNotifications(myPageDTO.getEmailNotifications())
                 .smsNotifications(myPageDTO.getSmsNotifications())
+                .creatorPassword(existingCreator.getCreatorPassword()) // 기존 비밀번호 유지
+                .offlineStoreEntities(existingCreator.getOfflineStoreEntities()) // 기존 컬렉션 유지
+                .qnaEntities(existingCreator.getQnaEntities())                   // 기존 컬렉션 유지
+                .reviewEntities(existingCreator.getReviewEntities())             // 기존 컬렉션 유지
+                .orderEntities(existingCreator.getOrderEntities())               // 기존 컬렉션 유지
                 .build();
 
         myPageRepository.save(updatedCreator);
     }
+
 }
