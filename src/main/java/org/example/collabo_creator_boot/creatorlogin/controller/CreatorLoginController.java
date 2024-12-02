@@ -29,13 +29,13 @@ public class CreatorLoginController {
 
     private final JWTUtil jwtUtil;
 
-    @Value("${org.oz.accessTime}")
+    @Value("${org.example.accessTime}")
     private int accessTime;
 
-    @Value("${org.oz.refreshTime}")
+    @Value("${org.example.refreshTime}")
     private int refreshTime;
 
-    @Value("${org.oz.alwaysNew}")
+    @Value("${org.example.alwaysNew}")
     private boolean alwaysNew;
 
     @PostMapping("makeToken")

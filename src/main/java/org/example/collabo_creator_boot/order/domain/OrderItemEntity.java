@@ -1,12 +1,11 @@
 package org.example.collabo_creator_boot.order.domain;
 
 import jakarta.persistence.*;
-import org.example.collabo_creator_boot.common.BasicEntity;
 import org.example.collabo_creator_boot.product.domain.ProductEntity;
 
 @Entity
 @Table(name = "order_item")
-public class OrderItemEntity extends BasicEntity {
+public class OrderItemEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="order_item_no", nullable = false)
