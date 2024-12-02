@@ -1,6 +1,6 @@
 package org.example.collabo_creator_boot.order.domain;
 
-public enum RefundCancelStatus {
+public enum RefundNCancelStatus {
 
     REFUND("환불"),
     CANCEL("취소"),
@@ -9,7 +9,7 @@ public enum RefundCancelStatus {
 
     private final String description;
 
-    RefundCancelStatus(String description) {
+    RefundNCancelStatus(String description) {
         this.description = description;
     }
 
@@ -17,7 +17,7 @@ public enum RefundCancelStatus {
         return description;
     }
 
-    public static RefundCancelStatus fromDbValue(String dbValue) {
+    public static RefundNCancelStatus fromDbValue(String dbValue) {
         switch (dbValue) {
             case "1": return REFUND;
             case "2": return CANCEL;
