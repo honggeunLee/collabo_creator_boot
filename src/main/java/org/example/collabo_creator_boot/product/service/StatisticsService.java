@@ -1,74 +1,95 @@
 package org.example.collabo_creator_boot.product.service;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.example.collabo_creator_boot.category.domain.CategoryEntity;
-import org.example.collabo_creator_boot.product.domain.ProductEntity;
-import org.example.collabo_creator_boot.product.domain.ProductImageEntity;
-import org.example.collabo_creator_boot.product.dto.ProductReadDTO;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import org.example.collabo_creator_boot.product.dto.StatisticsDTO;
-import org.example.collabo_creator_boot.product.repository.StatisticsRepository;
-import org.example.collabo_creator_boot.review.domain.ReviewEntity;
+import org.example.collabo_creator_boot.product.dto.StatisticsWithProductDTO;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
-@RequiredArgsConstructor
-@Log4j2
 public class StatisticsService {
 
-    private final StatisticsRepository statisticsRepository;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-//    public StatisticsDTO getStatistics() {
-//        List<Object[]> result = statisticsRepository.getStatistics();
-//
-//        if (result.isEmpty()) {
-//            throw new RuntimeException("Not valueable creatorId");
-//        }
-//
-//        ProductEntity product = (ProductEntity) result.get(0)[0];
-//        CategoryEntity category = (CategoryEntity) result.get(0)[1];
-//
-//        List<ReviewEntity> reviews = result.stream()
-//                .map(arr -> (ReviewEntity) arr[2])
-//                .filter(review -> review != null)
-//                .collect(Collectors.toList());
-//
-//        List<ProductImageEntity> images = result.stream()
-//                .map(arr -> (ProductImageEntity) arr[3])
-//                .filter(image -> image != null)
-//                .collect(Collectors.toList());
-//
-//        //리뷰 평점 계산
-//        int averageRating = reviews.isEmpty() ? 0 : (int) reviews
-//                .stream()
-//                .mapToInt(ReviewEntity::getRating)
-//                .average()
-//                .orElse(0);
-//
-//        String comment = reviews.isEmpty() ? null : reviews
-//                .get(0)
-//                .getComment();
-//
-//        List<String> imageUrls = images.stream()
-//                .map(ProductImageEntity::getProductImageUrl)
-//                .collect(Collectors.toList());
-//
-//        return ProductReadDTO.builder()
-//                .productNo(product.getProductNo())
-//                .productName(product.getProductName())
-//                .productDescription(product.getProductDescription())
-//                .productPrice(product.getProductPrice())
-//                .stock(product.getStock())
-//                .productStatus(product.getProductStatus())
-//                .categoryName(category.getCategoryName())
-//                .rating(averageRating)
-//                .productImageUrl(imageUrls.isEmpty() ? null : imageUrls.get(0))
-//                .build();
-//    }
+    public List<StatisticsDTO> getSalesStatistics(String creatorId, LocalDateTime startDate, LocalDateTime endDate) {
 
+        String queryStr = """
+            SELECT
+                FUNCTION('MONTHNAME', o.createdAt) AS month,
+                SUM(o.totalPrice) AS totalSales,
+                COUNT(o.totalPrice) AS orderCount
+            FROM
+                OrdersEntity o
+            JOIN
+                o.orderItems oi
+            JOIN
+                oi.productEntity p
+            WHERE
+                o.createdAt BETWEEN :startDate AND :endDate
+                AND p.creatorEntity.creatorId = :creatorId
+            GROUP BY
+                FUNCTION('MONTH', o.createdAt), FUNCTION('MONTHNAME', o.createdAt)
+            ORDER BY
+                FUNCTION('MONTH', o.createdAt)
+        """;
+
+        TypedQuery<Object[]> query = entityManager.createQuery(queryStr, Object[].class);
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
+        query.setParameter("creatorId", creatorId);
+
+        List<Object[]> result = query.getResultList();
+
+        return result.stream()
+                .map(row -> StatisticsDTO.builder()
+                        .month((String) row[0])        // 월 이름
+                        .totalSales((Long) row[1])    // totalPrice 합계
+                        .orderCount((Long) row[2])    // order 수
+                        .build()
+                )
+                .collect(Collectors.toList());
+    }
+
+    public List<StatisticsWithProductDTO> getProductSalesStatistics(String creatorId, LocalDateTime startDate, LocalDateTime endDate) {
+        String queryStr = """
+        SELECT 
+            c.categoryName AS categoryName,
+            p.productName AS productName,
+            SUM(oi.quantity) AS totalSold,
+            SUM(CASE WHEN rc.status = 1 THEN oi.quantity ELSE 0 END) AS totalRefunded,
+            SUM(oi.quantity * p.productPrice) AS totalSales
+        FROM OrdersEntity o
+        JOIN o.orderItems oi
+        JOIN oi.productEntity p
+        JOIN p.categoryEntity c
+        LEFT JOIN RefundNCancelEntity rc ON rc.ordersEntity = o
+        WHERE o.createdAt BETWEEN :startDate AND :endDate
+        AND p.creatorEntity.creatorId = :creatorId
+        GROUP BY c.categoryName, p.productName
+        ORDER BY c.categoryName, p.productName
+    """;
+
+        TypedQuery<Object[]> query = entityManager.createQuery(queryStr, Object[].class);
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
+        query.setParameter("creatorId", creatorId);
+
+        List<Object[]> results = query.getResultList();
+
+        return results.stream()
+                .map(row -> StatisticsWithProductDTO.builder()
+                        .categoryName((String) row[0])
+                        .productName((String) row[1])
+                        .totalSold((Long) row[2])
+                        .totalRefunded((Long) row[3])
+                        .totalSales((Long) row[4])
+                        .build())
+                .collect(Collectors.toList());
+    }
 }

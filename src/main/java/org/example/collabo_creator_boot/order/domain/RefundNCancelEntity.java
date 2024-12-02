@@ -1,9 +1,11 @@
 package org.example.collabo_creator_boot.order.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.example.collabo_creator_boot.common.BasicEntity;
 
 @Entity
+@Getter
 @Table(name = "refund_and_cancel")
 public class RefundNCancelEntity extends BasicEntity {
     @Id
