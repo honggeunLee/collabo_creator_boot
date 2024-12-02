@@ -19,11 +19,8 @@ public class ReviewController {
 
     @GetMapping("/list")
     public ResponseEntity<PageResponseDTO<ReviewListDTO>> getReviewList(
-            @CookieValue(value = "creatorId", required = false) String creatorId,
+            @RequestParam("creatorId") String creatorId,
             @ModelAttribute PageRequestDTO pageRequestDTO) {
-        if (creatorId == null || creatorId.isEmpty()) {
-            throw new IllegalArgumentException("Creator ID is missing.");
-        }
 
         PageResponseDTO<ReviewListDTO> response = reviewService.getReviewList(creatorId, pageRequestDTO);
         return ResponseEntity.ok(response);

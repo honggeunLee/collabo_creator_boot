@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QnAImageDTO {
-    private int qnaImageNo;
+    private Integer qnaImageNo;
     private String qnaImageUrl;
-    private int qnaImageOrd;
+    private Integer qnaImageOrd;
 }

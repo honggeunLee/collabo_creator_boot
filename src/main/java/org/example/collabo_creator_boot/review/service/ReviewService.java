@@ -32,6 +32,7 @@ public class ReviewService {
                 .reply(reply) // 답변 추가
                 .productEntity(existingReview.getProductEntity())
                 .customerEntity(existingReview.getCustomerEntity())
+                .creatorEntity(existingReview.getCreatorEntity())
                 .build();
 
         // 엔티티 저장

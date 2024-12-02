@@ -19,11 +19,8 @@ public class QnAController {
 
     @GetMapping("/list")
     public ResponseEntity<PageResponseDTO<QnAListDTO>> getQnAList(
-            @CookieValue(value = "creatorId", required = false) String creatorId,
+            @RequestParam("creatorId") String creatorId,
             @ModelAttribute PageRequestDTO pageRequestDTO) {
-        if (creatorId == null || creatorId.isEmpty()) {
-            throw new IllegalArgumentException("Creator ID is missing.");
-        }
 
         PageResponseDTO<QnAListDTO> response = qnaService.getQnAListByCreator(creatorId, pageRequestDTO);
         return ResponseEntity.ok(response);

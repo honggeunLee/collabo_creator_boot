@@ -31,6 +31,7 @@ public class QnAService {
                 .customerEntity(existingQnA.getCustomerEntity())
                 .question(existingQnA.getQuestion())
                 .answer(answer) // 답변 추가
+                .creatorEntity(existingQnA.getCreatorEntity())
                 .build();
 
         // 엔티티 저장

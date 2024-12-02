@@ -30,7 +30,7 @@ spring:
       enabled: true
 
 org:
-  oz:
+  example:
     accessTime: 60
     refreshTime: 216000
     alwaysNew: true

@@ -1,8 +1,10 @@
 package org.example.collabo_creator_boot.creator.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.example.collabo_creator_boot.common.BasicEntity;
 import org.example.collabo_creator_boot.order.domain.OrdersEntity;
 import org.example.collabo_creator_boot.qna.domain.QnAEntity;
@@ -13,6 +15,9 @@ import java.util.List;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "creator")
 public class CreatorEntity extends BasicEntity {
 
@@ -38,9 +43,6 @@ public class CreatorEntity extends BasicEntity {
     @Column(name = "logo_img")
     private String logoImg;
 
-    @Column(name = "del_flag", columnDefinition = "BOOLEAN DEFAULT false")
-    private Boolean delFlag = Boolean.FALSE;
-
     @Column(name = "email_notifications", columnDefinition = "BOOLEAN DEFAULT true")
     private Boolean emailNotifications = Boolean.TRUE;
 
@@ -65,4 +67,7 @@ public class CreatorEntity extends BasicEntity {
     @OneToMany(mappedBy = "creatorEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrdersEntity> orderEntities = new ArrayList<>();
 
+    // Creator와 연관된 OfflineStore
+    @OneToMany(mappedBy = "creatorEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CreatorOfflineStoreEntity> offlineStoreEntities = new ArrayList<>();
 }

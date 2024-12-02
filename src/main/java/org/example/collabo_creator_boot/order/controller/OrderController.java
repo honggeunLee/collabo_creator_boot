@@ -18,12 +18,8 @@ public class OrderController {
 
     @GetMapping("/list")
     public ResponseEntity<PageResponseDTO<OrderListDTO>> getOrderList(
-            @CookieValue(value = "creatorId", required = false) String creatorId,
+            @RequestParam("creatorId") String creatorId,
             @ModelAttribute PageRequestDTO pageRequestDTO) {
-
-        if (creatorId == null || creatorId.isEmpty()) {
-            throw new IllegalArgumentException("Creator ID is missing.");
-        }
 
         PageResponseDTO<OrderListDTO> response = orderService.getOrderListByCreator(creatorId, pageRequestDTO);
         return ResponseEntity.ok(response);
@@ -31,12 +27,8 @@ public class OrderController {
 
     @GetMapping("/{orderNo}")
     public ResponseEntity<OrderDetailDTO> getOrderDetail(
-            @CookieValue(value = "creatorId", required = false) String creatorId,
+            @RequestParam("creatorId") String creatorId,
             @PathVariable Long orderNo) {
-
-        if (creatorId == null || creatorId.isEmpty()) {
-            throw new IllegalArgumentException("Creator ID is missing.");
-        }
 
         OrderDetailDTO orderDetail = orderService.getOrderDetailByCreator(creatorId, orderNo);
         return ResponseEntity.ok(orderDetail);
