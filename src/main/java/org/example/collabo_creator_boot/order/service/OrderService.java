@@ -19,14 +19,14 @@ public class OrderService {
     private final OrderSearch orderSearch;
     private final OrderRepository orderRepository;
 
-    public PageResponseDTO<OrderListDTO> getOrderList(PageRequestDTO pageRequestDTO) {
-        return orderSearch.orderList(pageRequestDTO);
+    public PageResponseDTO<OrderListDTO> getOrderListByCreator(String creatorId, PageRequestDTO pageRequestDTO) {
+        return orderSearch.orderListByCreator(creatorId, pageRequestDTO);
     }
 
-    public OrderDetailDTO getOrderDetail(Long orderNo) {
-        OrderDetailDTO orderDetail = orderRepository.findOrderDetail(orderNo);
+    public OrderDetailDTO getOrderDetailByCreator(String creatorId, Long orderNo) {
+        OrderDetailDTO orderDetail = orderRepository.findOrderDetailByCreator(creatorId, orderNo);
         if (orderDetail == null) {
-            throw new IllegalArgumentException("Order not found for orderNo: " + orderNo);
+            throw new IllegalArgumentException("Order not found for creatorId: " + creatorId);
         }
         List<OrderItemDTO> orderItems = orderRepository.findOrderItems(orderNo);
         orderDetail.setOrderItems(orderItems);

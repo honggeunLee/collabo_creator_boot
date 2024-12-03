@@ -1,14 +1,18 @@
 package org.example.collabo_creator_boot.product.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.example.collabo_creator_boot.product.domain.ProductStatus;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductReadDTO {
-    //product data
+    // Product data
     private Long productNo;
     private String productName;
     private String productDescription;
@@ -21,14 +25,16 @@ public class ProductReadDTO {
         return ProductStatus.fromDbValue(productStatus).getDescription();
     }
 
-    //category data
+    // Category data
     private String categoryName;
 
-    //review data
+    // Add categoryNo for updates
+    private Long categoryNo;
+
+    // Review data
     private int rating;
     private String comment;
 
-    //img data
+    // Image data
     private String productImageUrl;
-
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ProductRepository extends JpaRepository<ProductEntity,String>, ProductSearch {
+public interface ProductRepository extends JpaRepository<ProductEntity, Long>, ProductSearch {
 
     @Query("""
         SELECT p, c, r, i 

@@ -31,9 +31,17 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final CreatorRepository creatorRepository;
 
-    public PageResponseDTO<ProductListDTO> getProductList(PageRequestDTO pageRequestDTO){
-        return productRepository.productList(pageRequestDTO);
+    public PageResponseDTO<ProductListDTO> getCreatorProductList(
+            String creatorId,
+            PageRequestDTO pageRequestDTO,
+            String searchQuery,
+            String status,
+            Long categoryNo) {
+
+        // 필터 조건에 따라 데이터 조회
+        return productRepository.productListByCreator(creatorId, pageRequestDTO, searchQuery, status, categoryNo);
     }
+
 
     public ProductReadDTO readProductDetails(Long productNo) {
         List<Object[]> result = productRepository.readProductDetails(productNo);
@@ -82,6 +90,39 @@ public class ProductService {
                 .productImageUrl(imageUrls.isEmpty() ? null : imageUrls.get(0))
                 .build();
     }
+
+    public void updateProduct(String creatorId, Long productNo, ProductReadDTO productReadDTO) {
+        // 로그 추가
+        log.info("Updating product: {}, Creator ID: {}", productNo, creatorId);
+        log.info("DTO received: {}", productReadDTO);
+
+        ProductEntity existingProduct = productRepository.findById(productNo)
+                .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다: " + productNo));
+
+        log.info("Existing Product: {}", existingProduct);
+
+        CategoryEntity categoryEntity = categoryRepository.findById(productReadDTO.getCategoryNo())
+                .orElseThrow(() -> new IllegalArgumentException("카테고리를 찾을 수 없습니다: " + productReadDTO.getCategoryNo()));
+
+        log.info("Category Entity: {}", categoryEntity);
+
+        ProductEntity updatedProduct = ProductEntity.builder()
+                .productNo(existingProduct.getProductNo())
+                .productName(productReadDTO.getProductName())
+                .productDescription(productReadDTO.getProductDescription())
+                .productPrice(productReadDTO.getProductPrice())
+                .stock(productReadDTO.getStock())
+                .productStatus(productReadDTO.getProductStatus())
+                .creatorEntity(existingProduct.getCreatorEntity())
+                .categoryEntity(categoryEntity)
+                .productImages(existingProduct.getProductImages())
+                .build();
+
+        productRepository.save(updatedProduct);
+        log.info("Product updated successfully.");
+    }
+
+
 
     public Long registerProduct(ProductRegisterDTO productRegisterDTO) {
 

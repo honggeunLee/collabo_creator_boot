@@ -6,5 +6,5 @@ import org.example.collabo_creator_boot.order.dto.OrderListDTO;
 
 public interface OrderSearch {
 
-    PageResponseDTO<OrderListDTO> orderList(PageRequestDTO pageRequestDTO);
+    PageResponseDTO<OrderListDTO> orderListByCreator(String creatorId, PageRequestDTO pageRequestDTO);
 }

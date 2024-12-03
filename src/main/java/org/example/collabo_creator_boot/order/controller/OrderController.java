@@ -17,14 +17,20 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping("/list")
-    public ResponseEntity<PageResponseDTO<OrderListDTO>> getOrderList(@ModelAttribute PageRequestDTO pageRequestDTO) {
-        PageResponseDTO<OrderListDTO> response = orderService.getOrderList(pageRequestDTO);
+    public ResponseEntity<PageResponseDTO<OrderListDTO>> getOrderList(
+            @RequestParam("creatorId") String creatorId,
+            @ModelAttribute PageRequestDTO pageRequestDTO) {
+
+        PageResponseDTO<OrderListDTO> response = orderService.getOrderListByCreator(creatorId, pageRequestDTO);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{orderNo}")
-    public ResponseEntity<OrderDetailDTO> getOrderDetail(@PathVariable Long orderNo) {
-        OrderDetailDTO orderDetail = orderService.getOrderDetail(orderNo);
+    public ResponseEntity<OrderDetailDTO> getOrderDetail(
+            @RequestParam("creatorId") String creatorId,
+            @PathVariable Long orderNo) {
+
+        OrderDetailDTO orderDetail = orderService.getOrderDetailByCreator(creatorId, orderNo);
         return ResponseEntity.ok(orderDetail);
     }
 }

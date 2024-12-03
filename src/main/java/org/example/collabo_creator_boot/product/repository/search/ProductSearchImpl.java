@@ -1,5 +1,6 @@
 package org.example.collabo_creator_boot.product.repository.search;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLQuery;
@@ -27,28 +28,61 @@ import java.util.stream.Collectors;
 @Log4j2
 public class ProductSearchImpl extends QuerydslRepositorySupport implements ProductSearch {
 
-    public ProductSearchImpl() {super(ProductEntity.class);}
+    public ProductSearchImpl() {
+        super(ProductEntity.class);
+    }
 
     @Override
-    public PageResponseDTO<ProductListDTO> productList(PageRequestDTO pageRequestDTO){
+    public PageResponseDTO<ProductListDTO> productListByCreator(
+            String creatorId,
+            PageRequestDTO pageRequestDTO,
+            String searchQuery,
+            String status,
+            Long categoryNo) {
 
+        // 페이징 설정
         Pageable pageable = PageRequest.of(
-                pageRequestDTO.getPage() -1,
+                pageRequestDTO.getPage() - 1,
                 pageRequestDTO.getSize(),
-                Sort.by("productNo").descending());
+                Sort.by("productNo").descending()
+        );
 
+        // QueryDSL 엔티티 참조
         QProductEntity product = QProductEntity.productEntity;
         QProductImageEntity productImage = QProductImageEntity.productImageEntity;
         QCategoryEntity category = QCategoryEntity.categoryEntity;
         QCreatorEntity creator = QCreatorEntity.creatorEntity;
 
-        JPQLQuery<ProductEntity> query = from(product);
-        query.leftJoin(productImage).on(product.productNo.eq(productImage.productEntity.productNo));
-        query.leftJoin(category).on(product.categoryEntity.categoryNo.eq(category.categoryNo));
-        query.leftJoin(creator).on(product.creatorEntity.creatorId.eq(creator.creatorId));
+        // QueryDSL BooleanBuilder
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(product.creatorEntity.creatorId.eq(creatorId));
 
-        this.getQuerydsl().applyPagination(pageable,query);
+        // 검색어 조건 추가
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            builder.and(product.productName.containsIgnoreCase(searchQuery));
+        }
 
+        // 상태 조건 추가
+        if (status != null && !status.isEmpty()) {
+            builder.and(product.productStatus.stringValue().eq(status));
+        }
+
+        // 카테고리 조건 추가
+        if (categoryNo != null) {
+            builder.and(product.categoryEntity.categoryNo.eq(categoryNo));
+        }
+
+        // JPQL Query 설정
+        JPQLQuery<ProductEntity> query = from(product)
+                .leftJoin(productImage).on(product.productNo.eq(productImage.productEntity.productNo))
+                .leftJoin(category).on(product.categoryEntity.categoryNo.eq(category.categoryNo))
+                .leftJoin(creator).on(product.creatorEntity.creatorId.eq(creator.creatorId))
+                .where(builder); // BooleanBuilder 적용
+
+        // 페이징 적용
+        this.getQuerydsl().applyPagination(pageable, query);
+
+        // DTO Projection
         JPQLQuery<ProductListDTO> dtojpqlQuery = query.select(
                 Projections.bean(ProductListDTO.class,
                         product.productNo,
@@ -60,8 +94,10 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                         category.categoryNo,
                         category.categoryName,
                         creator.creatorName
-                )).groupBy(product.productNo, productImage.productImageOrd);
+                )
+        );
 
+        // 데이터 가져오기
         List<ProductListDTO> dtoList = dtojpqlQuery.fetch();
 
         // 이미지 데이터 조회
@@ -72,6 +108,7 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                 )
                 .fetch();
 
+        // 이미지 매핑
         Map<Long, List<String>> productImageMap = imageTuples.stream()
                 .collect(Collectors.groupingBy(
                         tuple -> tuple.get(productImage.productEntity.productNo),
@@ -81,14 +118,16 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                         )
                 ));
 
-        // DTO에 이미지 매핑
+        // DTO에 이미지 데이터 추가
         dtoList.forEach(dto -> {
             Long productNo = dto.getProductNo();
             dto.setProductImageUrl(productImageMap.getOrDefault(productNo, Collections.emptyList()));
         });
 
+        // 총 카운트 가져오기
         long total = query.fetchCount();
 
+        // PageResponseDTO 반환
         return PageResponseDTO.<ProductListDTO>withAll()
                 .dtoList(dtoList)
                 .pageRequestDTO(pageRequestDTO)
@@ -96,5 +135,5 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                 .build();
     }
 
-
 }
+

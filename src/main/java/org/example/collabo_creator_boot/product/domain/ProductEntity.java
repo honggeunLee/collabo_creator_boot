@@ -58,6 +58,4 @@ public class ProductEntity extends BasicEntity {
         productImages.add(productImage);
         productImage.linkToProduct(this);
     }
-
-
 }

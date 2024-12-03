@@ -16,8 +16,9 @@ public interface OrderRepository extends JpaRepository<OrdersEntity, Long> {
             "c.customerName, c.customerPhone, o.customerAddress, o.customerAddrDetail) " +
             "FROM OrdersEntity o " +
             "JOIN o.customerEntity c " +
-            "WHERE o.orderNo = :orderNo")
-    OrderDetailDTO findOrderDetail(@Param("orderNo") Long orderNo);
+            "WHERE o.orderNo = :orderNo AND o.creatorEntity.creatorId = :creatorId")
+    OrderDetailDTO findOrderDetailByCreator(@Param("creatorId") String creatorId, @Param("orderNo") Long orderNo);
+
 
     @Query("SELECT new org.example.collabo_creator_boot.order.dto.OrderItemDTO(" +
             "oi.productEntity.productNo, oi.productEntity.productName, oi.productEntity.productPrice, " +

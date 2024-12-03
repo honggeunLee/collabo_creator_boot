@@ -3,6 +3,7 @@ package org.example.collabo_creator_boot.order.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.example.collabo_creator_boot.common.BasicEntity;
+import org.example.collabo_creator_boot.creator.domain.CreatorEntity;
 import org.example.collabo_creator_boot.customer.domain.CustomerEntity;
 
 import java.util.HashSet;
@@ -21,6 +22,10 @@ public class OrdersEntity extends BasicEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
     private CustomerEntity customerEntity;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "creator_id", referencedColumnName = "creator_id")
+    private CreatorEntity creatorEntity;
 
     @Column(name = "total_amount", nullable = false)
     private Integer totalAmount;

@@ -1,12 +1,21 @@
 package org.example.collabo_creator_boot.creator.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.example.collabo_creator_boot.common.BasicEntity;
 
 import java.math.BigDecimal;
 
 @Entity
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "creator_offline_store")
-public class CreatorOfflineStoreEntity {
+public class CreatorOfflineStoreEntity extends BasicEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,8 +28,8 @@ public class CreatorOfflineStoreEntity {
     @Column(name = "store_name", nullable = false)
     private String storeName;
 
-    @Column(name = "store_location")
-    private String storeLocation;
+    @Column(name = "store_address")
+    private String storeAddress;
 
     @Column(name = "latitude", precision = 10, scale = 8, nullable = false)
     private BigDecimal latitude;
