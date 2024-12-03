@@ -56,8 +56,14 @@ public class StatisticsService {
                 .collect(Collectors.toList());
     }
 
-    public List<StatisticsWithProductDTO> getProductSalesStatistics(String creatorId, LocalDateTime startDate, LocalDateTime endDate) {
-        String queryStr = """
+    public List<StatisticsWithProductDTO> getProductSalesStatistics(
+            String creatorId,
+            LocalDateTime startDate,
+            LocalDateTime endDate,
+            Long category,
+            String searchTerm
+    ) {
+        StringBuilder queryBuilder = new StringBuilder("""
         SELECT 
             c.categoryName AS categoryName,
             p.productName AS productName,
@@ -71,14 +77,33 @@ public class StatisticsService {
         LEFT JOIN RefundNCancelEntity rc ON rc.ordersEntity = o
         WHERE o.createdAt BETWEEN :startDate AND :endDate
         AND p.creatorEntity.creatorId = :creatorId
+    """);
+
+        // 동적 조건 추가
+        if (category != null) {
+            queryBuilder.append(" AND c.categoryNo = :category");
+        }
+        if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+            queryBuilder.append(" AND LOWER(p.productName) LIKE LOWER(CONCAT('%', :searchTerm, '%'))");
+        }
+
+        queryBuilder.append("""
         GROUP BY c.categoryName, p.productName
         ORDER BY c.categoryName, p.productName
-    """;
+    """);
 
-        TypedQuery<Object[]> query = entityManager.createQuery(queryStr, Object[].class);
+        TypedQuery<Object[]> query = entityManager.createQuery(queryBuilder.toString(), Object[].class);
         query.setParameter("startDate", startDate);
         query.setParameter("endDate", endDate);
         query.setParameter("creatorId", creatorId);
+
+        // 선택적 파라미터 설정
+        if (category != null) {
+            query.setParameter("category", category);
+        }
+        if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+            query.setParameter("searchTerm", searchTerm.trim());
+        }
 
         List<Object[]> results = query.getResultList();
 
@@ -92,4 +117,5 @@ public class StatisticsService {
                         .build())
                 .collect(Collectors.toList());
     }
+
 }

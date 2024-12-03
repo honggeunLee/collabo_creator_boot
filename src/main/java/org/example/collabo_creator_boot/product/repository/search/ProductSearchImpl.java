@@ -77,7 +77,8 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                 .leftJoin(productImage).on(product.productNo.eq(productImage.productEntity.productNo))
                 .leftJoin(category).on(product.categoryEntity.categoryNo.eq(category.categoryNo))
                 .leftJoin(creator).on(product.creatorEntity.creatorId.eq(creator.creatorId))
-                .where(builder); // BooleanBuilder 적용
+                .where(builder)
+                .groupBy(product.productNo);
 
         // 페이징 적용
         this.getQuerydsl().applyPagination(pageable, query);
