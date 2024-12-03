@@ -31,9 +31,17 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final CreatorRepository creatorRepository;
 
-    public PageResponseDTO<ProductListDTO> getCreatorProductList(String creatorId, PageRequestDTO pageRequestDTO){
-        return productRepository.productListByCreator(creatorId, pageRequestDTO);
+    public PageResponseDTO<ProductListDTO> getCreatorProductList(
+            String creatorId,
+            PageRequestDTO pageRequestDTO,
+            String searchQuery,
+            String status,
+            Long categoryNo) {
+
+        // 필터 조건에 따라 데이터 조회
+        return productRepository.productListByCreator(creatorId, pageRequestDTO, searchQuery, status, categoryNo);
     }
+
 
     public ProductReadDTO readProductDetails(Long productNo) {
         List<Object[]> result = productRepository.readProductDetails(productNo);

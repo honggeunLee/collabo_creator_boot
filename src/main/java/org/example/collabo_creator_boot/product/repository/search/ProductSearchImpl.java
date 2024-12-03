@@ -1,5 +1,6 @@
 package org.example.collabo_creator_boot.product.repository.search;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLQuery;
@@ -32,7 +33,13 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
     }
 
     @Override
-    public PageResponseDTO<ProductListDTO> productListByCreator(String creatorId, PageRequestDTO pageRequestDTO) {
+    public PageResponseDTO<ProductListDTO> productListByCreator(
+            String creatorId,
+            PageRequestDTO pageRequestDTO,
+            String searchQuery,
+            String status,
+            Long categoryNo) {
+
         // 페이징 설정
         Pageable pageable = PageRequest.of(
                 pageRequestDTO.getPage() - 1,
@@ -46,12 +53,31 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
         QCategoryEntity category = QCategoryEntity.categoryEntity;
         QCreatorEntity creator = QCreatorEntity.creatorEntity;
 
+        // QueryDSL BooleanBuilder
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(product.creatorEntity.creatorId.eq(creatorId));
+
+        // 검색어 조건 추가
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            builder.and(product.productName.containsIgnoreCase(searchQuery));
+        }
+
+        // 상태 조건 추가
+        if (status != null && !status.isEmpty()) {
+            builder.and(product.productStatus.stringValue().eq(status));
+        }
+
+        // 카테고리 조건 추가
+        if (categoryNo != null) {
+            builder.and(product.categoryEntity.categoryNo.eq(categoryNo));
+        }
+
         // JPQL Query 설정
         JPQLQuery<ProductEntity> query = from(product)
-                .leftJoin(productImage).on(product.productNo.eq(productImage.productEntity.productNo)) // 상품 -> 이미지 조인
-                .leftJoin(category).on(product.categoryEntity.categoryNo.eq(category.categoryNo))       // 상품 -> 카테고리 조인
-                .leftJoin(creator).on(product.creatorEntity.creatorId.eq(creator.creatorId))            // 상품 -> 창작자 조인
-                .where(product.creatorEntity.creatorId.eq(creatorId));                                  // **creatorId 조건 추가**
+                .leftJoin(productImage).on(product.productNo.eq(productImage.productEntity.productNo))
+                .leftJoin(category).on(product.categoryEntity.categoryNo.eq(category.categoryNo))
+                .leftJoin(creator).on(product.creatorEntity.creatorId.eq(creator.creatorId))
+                .where(builder); // BooleanBuilder 적용
 
         // 페이징 적용
         this.getQuerydsl().applyPagination(pageable, query);
@@ -108,5 +134,6 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                 .totalCount(total)
                 .build();
     }
+
 }
 

@@ -25,8 +25,14 @@ public class ProductController {
     @GetMapping("/list")
     public ResponseEntity<PageResponseDTO<ProductListDTO>> getCreatorProductList(
             @RequestParam("creatorId") String creatorId,
+            @RequestParam(value = "searchQuery", required = false) String searchQuery,
+            @RequestParam(value = "status", required = false) String status,
+            @RequestParam(value = "categoryNo", required = false) Long categoryNo,
             @ModelAttribute PageRequestDTO pageRequestDTO) {
-        PageResponseDTO<ProductListDTO> response = productService.getCreatorProductList(creatorId, pageRequestDTO); // PageRequestDTO에 creatorId 설정
+
+        PageResponseDTO<ProductListDTO> response = productService.getCreatorProductList(
+                creatorId, pageRequestDTO, searchQuery, status, categoryNo);
+
         return ResponseEntity.ok(response);
     }
 
