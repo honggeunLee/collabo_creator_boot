@@ -42,7 +42,9 @@ public class StatisticsController {
     public ResponseEntity<List<StatisticsWithProductDTO>> getProductStatistics(
             @RequestParam("creatorId") String creatorId,
             @RequestParam("startDate") String startDate,
-            @RequestParam("endDate") String endDate
+            @RequestParam("endDate") String endDate,
+            @RequestParam(value = "category", required = false) Long category, // 카테고리 필터 추가
+            @RequestParam(value = "searchTerm", required = false) String searchTerm // 검색어 필터 추가
     ) {
         // 날짜 변환
         LocalDateTime parsedStartDate = LocalDateTime.parse(startDate.trim());
@@ -50,7 +52,8 @@ public class StatisticsController {
 
         // 서비스 호출
         List<StatisticsWithProductDTO> productStatistics =
-                statisticsService.getProductSalesStatistics(creatorId, parsedStartDate, parsedEndDate);
+                statisticsService.getProductSalesStatistics( creatorId, parsedStartDate, parsedEndDate, category, searchTerm != null ? searchTerm.trim() : null
+                );
 
         // 응답 반환
         return ResponseEntity.ok(productStatistics);
