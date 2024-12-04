@@ -21,6 +21,6 @@ public class ProductRegisterDTO {
     private Long categoryNo;
     private String creatorId;
     private String productStatus;
-    private List<String> productImages;
+    private List<ProductImageDTO> productImages;
 
 }
