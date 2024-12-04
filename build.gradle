@@ -58,6 +58,8 @@ dependencies {
 
     implementation 'me.paulschwarz:spring-dotenv:3.0.0'
 
+    implementation 'net.coobird:thumbnailator:0.4.14'
+
 }
 
 tasks.named('test') {

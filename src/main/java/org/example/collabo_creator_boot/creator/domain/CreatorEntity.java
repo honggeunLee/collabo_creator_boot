@@ -37,10 +37,10 @@ public class CreatorEntity extends BasicEntity {
     @Column(name = "creator_password", nullable = false)
     private String creatorPassword;
 
-    @Column(name = "background_img")
+    @Column(name = "background_img", length = 512)
     private String backgroundImg;
 
-    @Column(name = "logo_img")
+    @Column(name = "logo_img", length = 512)
     private String logoImg;
 
     @Column(name = "email_notifications", columnDefinition = "BOOLEAN DEFAULT true")
