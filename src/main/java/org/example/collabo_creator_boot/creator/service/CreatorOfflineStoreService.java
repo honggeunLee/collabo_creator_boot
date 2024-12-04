@@ -1,6 +1,7 @@
 package org.example.collabo_creator_boot.creator.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.collabo_creator_boot.common.S3Uploader;
 import org.example.collabo_creator_boot.creator.domain.CreatorEntity;
 import org.example.collabo_creator_boot.creator.domain.CreatorOfflineStoreEntity;
 import org.example.collabo_creator_boot.creator.dto.OfflineStoreListDTO;
@@ -17,31 +18,28 @@ import java.util.List;
 public class CreatorOfflineStoreService {
     private final CreatorRepository creatorRepository;
     private final CreatorOfflineStoreRepository creatorOfflineStoreRepository;
+    private final S3Uploader s3Uploader;
 
     public List<OfflineStoreListDTO> getOfflineStoresByCreator(String creatorId) {
         return creatorRepository.offlineStoreListByCreator(creatorId);
     }
 
     public Long registerOfflineStore(String creatorId, OfflineStoreRegisterDTO dto) {
-        // creatorId로 CreatorEntity 조회
         CreatorEntity creatorEntity = creatorRepository.findById(creatorId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid creatorId"));
 
-        // CreatorOfflineStoreEntity 생성
         CreatorOfflineStoreEntity offlineStoreEntity = CreatorOfflineStoreEntity.builder()
                 .storeNo(dto.getStoreNo())
                 .storeName(dto.getStoreName())
                 .storeAddress(dto.getStoreAddress())
-                .storeImage(dto.getStoreImage())
                 .latitude(new BigDecimal(dto.getLatitude()))
                 .longitude(new BigDecimal(dto.getLongitude()))
+                .storeImage(dto.getStoreImage()) // 클라이언트에서 전달받은 URL
                 .creatorEntity(creatorEntity)
                 .build();
 
-        // 엔티티 저장
         creatorOfflineStoreRepository.save(offlineStoreEntity);
-
-        return offlineStoreEntity.getStoreNo(); // 저장된 StoreNo 반환
+        return offlineStoreEntity.getStoreNo();
     }
 
     public Long updateOfflineStore(Long storeNo, OfflineStoreRegisterDTO dto) {

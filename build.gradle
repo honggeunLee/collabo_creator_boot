@@ -53,6 +53,11 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka'
 
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+    implementation 'me.paulschwarz:spring-dotenv:3.0.0'
+
 }
 
 tasks.named('test') {
