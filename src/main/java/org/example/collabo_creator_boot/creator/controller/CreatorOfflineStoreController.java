@@ -23,12 +23,11 @@ public class CreatorOfflineStoreController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Long> addOfflineStore(
+    public ResponseEntity<Long> registerOfflineStore(
             @RequestParam("creatorId") String creatorId,
-            @RequestBody OfflineStoreRegisterDTO offlineStoreRegisterDTO) {
-
-        Long storeId = creatorOfflineStoreService.registerOfflineStore(creatorId, offlineStoreRegisterDTO);
-        return ResponseEntity.ok(storeId);
+            @RequestBody OfflineStoreRegisterDTO dto) {
+        Long storeNo = creatorOfflineStoreService.registerOfflineStore(creatorId, dto);
+        return ResponseEntity.ok(storeNo);
     }
 
     @PutMapping("/update/{storeNo}")

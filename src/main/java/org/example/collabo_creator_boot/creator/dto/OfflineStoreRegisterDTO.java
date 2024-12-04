@@ -10,10 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class OfflineStoreRegisterDTO {
-    private Long storeNo;
-    private String storeImage;
     private String storeName;
     private String storeAddress;
-    private String latitude;
-    private String longitude;
+    private String storeAddressDetail;
+    private String storeZipcode;
+    private String storeImage;
 }

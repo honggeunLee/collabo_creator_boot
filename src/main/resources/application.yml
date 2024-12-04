@@ -49,6 +49,10 @@ cloud:
     stack:
       auto: false
 
+kakao:
+  api:
+    key: ${KAKAO_API_KEY}
+
 logging:
   level:
     org.springframework.security.web: TRACE

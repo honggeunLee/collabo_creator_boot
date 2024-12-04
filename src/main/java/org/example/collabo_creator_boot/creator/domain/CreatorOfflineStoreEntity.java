@@ -31,6 +31,9 @@ public class CreatorOfflineStoreEntity extends BasicEntity {
     @Column(name = "store_address")
     private String storeAddress;
 
+    @Column(name = "store_address_detail")
+    private String storeAddressDetail;
+
     @Column(name = "latitude", precision = 10, scale = 8, nullable = false)
     private BigDecimal latitude;
 
