@@ -28,6 +28,7 @@ public class CreatorSearchImpl extends QuerydslRepositorySupport implements Crea
                 ))
                 .from(store)
                 .where(store.creatorEntity.creatorId.eq(creatorId))
+                .orderBy(store.storeNo.desc()) // 내림차순 정렬
                 .fetch();
     }
 }
