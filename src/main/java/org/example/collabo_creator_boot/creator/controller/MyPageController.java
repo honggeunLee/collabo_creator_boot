@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.*;
 public class MyPageController {
     private final MyPageService myPageService;
 
-    @GetMapping("/{creatorId}")
-    public ResponseEntity<MyPageDTO> getMyPage(@PathVariable String creatorId) {
+    @GetMapping()
+    public ResponseEntity<MyPageDTO> getMyPage(@RequestParam("creatorId") String creatorId) {
         MyPageDTO myPageDTO = myPageService.getMyPage(creatorId);
         return ResponseEntity.ok(myPageDTO);
     }
 
-    @PutMapping("/{creatorId}")
+    @PutMapping("/update")
     public ResponseEntity<String> updateMyPage(
-            @PathVariable String creatorId,
+            @RequestParam("creatorId") String creatorId,
             @RequestBody MyPageDTO myPageDTO) {
         myPageService.updateMyPage(creatorId, myPageDTO);
         return ResponseEntity.ok("마이페이지가 성공적으로 수정되었습니다.");
