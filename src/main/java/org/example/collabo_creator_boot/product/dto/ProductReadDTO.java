@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.collabo_creator_boot.product.domain.ProductStatus;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -35,6 +37,6 @@ public class ProductReadDTO {
     private int rating;
     private String comment;
 
-    // Image data
-    private String productImageUrl;
+    // Image data (multiple images)
+    private List<ProductImageDTO> productImages; // 다수 이미지 처리
 }

@@ -20,7 +20,7 @@ public class ProductImageEntity extends BasicEntity {
     @Column(name = "product_image_no")
     private int productImageNo;
 
-    @Column(name = "product_image_url")
+    @Column(name = "product_image_url", length = 2000)
     private String productImageUrl;
 
     @Column(name = "product_image_ord")
