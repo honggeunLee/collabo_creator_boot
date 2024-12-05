@@ -57,6 +57,7 @@ public class CreatorEntity extends BasicEntity {
 
     @Column(name = "creator_bank")
     private String creatorBank;
+
     // Creator와 연관된 QnA
     @OneToMany(mappedBy = "creatorEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QnAEntity> qnaEntities = new ArrayList<>();
