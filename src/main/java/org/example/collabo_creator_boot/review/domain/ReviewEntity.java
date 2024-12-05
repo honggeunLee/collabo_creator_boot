@@ -24,7 +24,7 @@ public class ReviewEntity extends BasicEntity {
     private Long reviewNo;
 
     @Column(name = "rating")
-    private int rating;
+    private Integer rating;
 
     @Column(name = "comment", nullable = false)
     private String comment;
