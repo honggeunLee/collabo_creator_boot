@@ -45,7 +45,7 @@ public class OrderDetailDTO {
     @JsonProperty("orderStatus") // JSON 응답에서 문자열 상태 반환
     public String getOrderStatusDescription() {
         try {
-            return OrderStatus.fromDbValue(orderStatus).getDescription();
+            return OrderStatus.valueOf(orderStatus).getDescription();  // Enum을 사용해 상태 설명을 반환
         } catch (IllegalArgumentException e) {
             return "알 수 없음";
         }
