@@ -34,7 +34,7 @@ public class OrdersEntity extends BasicEntity {
     private Integer totalPrice;
 
     @Column(name = "status", nullable = false)
-    private String status;
+    private Integer status;
 
     @Column(name = "customer_address", nullable = false)
     private String customerAddress;
