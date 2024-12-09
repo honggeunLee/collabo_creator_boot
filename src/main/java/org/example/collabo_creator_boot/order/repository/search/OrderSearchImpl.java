@@ -11,6 +11,7 @@ import org.example.collabo_creator_boot.order.domain.QOrderItemEntity;
 import org.example.collabo_creator_boot.order.domain.QOrdersEntity;
 import org.example.collabo_creator_boot.order.dto.OrderItemDTO;
 import org.example.collabo_creator_boot.order.dto.OrderListDTO;
+import org.example.collabo_creator_boot.order.repository.OrderRepository;
 import org.example.collabo_creator_boot.product.domain.QProductEntity;
 import org.example.collabo_creator_boot.product.domain.QProductImageEntity;
 import org.springframework.data.domain.PageRequest;
@@ -27,8 +28,11 @@ import java.util.stream.Collectors;
 @Repository
 public class OrderSearchImpl extends QuerydslRepositorySupport implements OrderSearch {
 
-    public OrderSearchImpl() {
+    private final OrderRepository orderRepository;
+
+    public OrderSearchImpl(OrderRepository orderRepository) {
         super(OrdersEntity.class);
+        this.orderRepository = orderRepository;
     }
 
     @Override
@@ -53,12 +57,19 @@ public class OrderSearchImpl extends QuerydslRepositorySupport implements OrderS
                         customer.customerAddr,
                         customer.customerAddrDetail,
                         orders.totalPrice,
-                        orders.status  // Enum 타입으로 매핑
+                        orders.status.as("orderStatus")
                 ));
 
         this.getQuerydsl().applyPagination(pageable, query);
 
         List<OrderListDTO> dtoList = query.fetch();
+
+        // 주문 아이템 데이터 추가
+        dtoList.forEach(dto -> {
+            List<OrderItemDTO> orderItems = orderRepository.findOrderItems(dto.getOrderNo());
+            dto.setOrderItems(orderItems);
+        });
+
         long total = query.fetchCount();
 
         return PageResponseDTO.<OrderListDTO>withAll()
