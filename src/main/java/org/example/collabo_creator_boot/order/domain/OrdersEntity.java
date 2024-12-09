@@ -2,6 +2,7 @@ package org.example.collabo_creator_boot.order.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 import org.example.collabo_creator_boot.common.BasicEntity;
 import org.example.collabo_creator_boot.creator.domain.CreatorEntity;
 import org.example.collabo_creator_boot.customer.domain.CustomerEntity;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "orders")
 public class OrdersEntity extends BasicEntity {
 
@@ -33,13 +35,14 @@ public class OrdersEntity extends BasicEntity {
     @Column(name = "total_price", nullable = false)
     private Integer totalPrice;
 
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "status", nullable = false)
-    private Integer status;
+    private OrderStatus status;
 
     @Column(name = "customer_address", nullable = false)
     private String customerAddress;
 
-    @Column(name = "customer_addr_detail", nullable = false)
+    @Column(name = "customer_addr_detail")
     private String customerAddrDetail;
 
     @Column(name = "recipient_name", nullable = false)
@@ -48,14 +51,7 @@ public class OrdersEntity extends BasicEntity {
     @Column(name = "recipient_phone", nullable = false)
     private String recipientPhone;
 
-    @PrePersist
-    @PreUpdate
-    private void calculateTotals() {
-        this.totalAmount = this.orderItems.stream().mapToInt(OrderItemEntity::getQuantity).sum();
-        this.totalPrice = this.orderItems.stream().mapToInt(item ->
-                item.getProductEntity().getProductPrice() * item.getQuantity()).sum();
-    }
-
     @OneToMany(mappedBy = "ordersEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItemEntity> orderItems = new ArrayList<>();
+
 }
