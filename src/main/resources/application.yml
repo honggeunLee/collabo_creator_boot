@@ -58,3 +58,8 @@ logging:
     org.springframework.security.web: TRACE
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+server:
+  port: 8080
+  ssl:
+    enabled: false
