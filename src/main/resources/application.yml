@@ -6,12 +6,11 @@ spring:
     url: jdbc:mariadb://117.52.20.52:3306/collabo
     username: manna
     password: manna20@#
-
     hikari:
       minimum-idle: 5
       maximum-pool-size: 10
+      initialization-fail-timeout: 0
       connection-timeout: 5000
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -21,13 +20,19 @@ spring:
       hibernate:
         default_batch_fetch_size: 10
         format_sql: true
-
   servlet:
     multipart:
       max-file-size: 5MB
       max-request-size: 20MB
       location: upload
       enabled: true
+  server:
+    port: 443
+    ssl:
+      key-store: classpath:keystore.p12
+      key-store-password: your_password # keystore 생성 시 설정한 비밀번호
+      key-store-type: PKCS12
+      key-alias: boot-app
 
 org:
   example:
@@ -43,7 +48,7 @@ cloud:
       access-key: ${AWS_ACCESS_KEY}
       secret-key: ${AWS_SECRET_KEY}
     s3:
-      bucket : oz-wizard-bucket
+      bucket: oz-wizard-bucket
     region:
       static: ap-northeast-2
     stack:
@@ -58,8 +63,3 @@ logging:
     org.springframework.security.web: TRACE
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-
-server:
-  port: 8080
-  ssl:
-    enabled: false
