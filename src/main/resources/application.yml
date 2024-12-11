@@ -36,6 +36,8 @@ org:
     alwaysNew: true
     upload:
       path: upload
+    kafkahost: 13.124.107.215
+    kafkaport: 9092
 
 cloud:
   aws:
